@@ -11,7 +11,7 @@ sensor=Adafruit_DHT.DHT11
 #Active GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(27, GPIO.OUT)
+GPIO.setup(22, GPIO.OUT)
 
 #Set GPIO sensor is connected to
 #gpio=17
@@ -54,9 +54,9 @@ try:
                 now = datetime.datetime.now()
                 if now.hour >= 8 and now.hour < 18:
                     #os.system('gpio -g mode 27 out')
-                    GPIO.output(27, True)
+                    GPIO.output(22, True)
                     time.sleep(1)
-                    GPIO.output(27, False)
+                    GPIO.output(22, False)
                     print("encendido")
                     while True:
                         if(net_is_up() == 0):
@@ -75,9 +75,9 @@ try:
                 now = datetime.datetime.now()
                 if now.hour >= 8 and now.hour < 18:
                     #os.system('gpio -g mode 27 in')
-                    GPIO.output(27, True)
+                    GPIO.output(22, True)
                     time.sleep(1)
-                    GPIO.output(27, False)
+                    GPIO.output(22, False)
                     print("apagado")
                     while True:
                         if(net_is_up() == 0):

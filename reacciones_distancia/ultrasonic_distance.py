@@ -9,14 +9,14 @@ import subprocess, datetime
 GPIO.setmode(GPIO.BCM) 
 
 #set GPIO Pins
-GPIO_TRIGGER = 23
-GPIO_ECHO = 24
+GPIO_TRIGGER = 5
+GPIO_ECHO = 6
  
 #set GPIO direction (IN / OUT)
 GPIO.setwarnings(False)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
-GPIO.setup(25, GPIO.OUT)
+GPIO.setup(19, GPIO.OUT)
 
 #test host
 hosts = ('google.com', 'kernel.org', 'yahoo.com')
@@ -76,8 +76,7 @@ if __name__ == '__main__':
         while True:
             dist = distance()
             print("Measured Distance = %.1f cm" % dist)
-            time.sleep(1)
-            if(dist >= 33 and dist <= 38):
+            if(dist >= 35 and dist <= 38):
                 if(estado != 0):
                     while True:
                         if(net_is_up() == 0):
@@ -93,8 +92,8 @@ if __name__ == '__main__':
                             #END of mysql
                             estado = 0
                             break
-                #Start Led
-                GPIO.output(25, False)
+                    #Start Led
+                    GPIO.output(19, False)
             else:
                 if(estado != 1):
                     while True:
@@ -112,7 +111,8 @@ if __name__ == '__main__':
                             estado = 1
                             break
                     #End Led 
-                    GPIO.output(25, True)
+                    GPIO.output(19, True)
+            time.sleep(3)
     # Reset by pressing CTRL + C
     except KeyboardInterrupt:
         print("Measurement stopped by User")
