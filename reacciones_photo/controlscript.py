@@ -99,59 +99,43 @@ def take_photo(name):
     return False
 
 def listen_welcome():
-    while True:
-        if(net_is_up() == 0):
-            r = sr.Recognizer()
-            m = sr.Microphone()
-            with m as source:
-                print("Adjusting noise")
-                r.adjust_for_ambient_noise(source, duration=-1)
-                print("Say something!")
-                try:
-                    GPIO.output(21, False)
-                    GPIO.output(12, True)
-                    audio = r.listen(source, timeout=5, phrase_time_limit=8)
-                    GPIO.output(12, False)
-                    GPIO.output(21, True)
-                    print("LISTENED")
-                    print("Trying to recognize")
-                    x = r.recognize_google(audio, language="es-mx")
-                    x = x.split(" ")
-                    print(x)
-                    #Borrar una vez que pase el 5 de Junio
-                    if len(x) != 0:
-                        GPIO.output(21, False)
-                        y = 0
-                        while y <= 5:
-                            GPIO.output(16, True)
-                            time.sleep(1)
-                            GPIO.output(16,False)
-                            time.sleep(1)
-                            y+=1
-                        GPIO.output(21, True)
-                    #-----------------------------------
-                    if len(x) != 2:
-                        return False, ""
-                    frase, nombre, estado = get_name(x)
-                    #print(frase, nombre, estado)
-                    if estado == False:
-                        return False, nombre
-                    if (frase=="Okay" or frase=="okay" or frase=="oK" or frase=="OK"  or ("ok" in frase) or ("Ok" in frase)):
-                        return True, nombre
-                except sr.UnknownValueError:
-                    print("Error trying to understand what you say to me")
-                    return False, ""
-                except sr.RequestError as e:
-                    print("I can't reach google, it's to sad")
-                    return False, ""
-                except Exception as e:
-                    print(e)
-                    return False, ""
-                except UnicodeDecodeError:
-                    return False, ""
+    r = sr.Recognizer()
+    m = sr.Microphone()
+    with m as source:
+        print("Adjusting noise")
+        r.adjust_for_ambient_noise(source, duration=-1)
+        print("Say something!")
+        try:
+            GPIO.output(21, False)
+            GPIO.output(12, True)
+            audio = r.listen(source, timeout=5, phrase_time_limit=8)
+            GPIO.output(12, False)
+            GPIO.output(21, True)
+            print("LISTENED")
+            print("Trying to recognize")
+            x = r.recognize_google(audio, language="es-mx")
+            x = x.split(" ")
+            #print(x)
+            if len(x) != 2:
+                return False, ""
+            frase, nombre, estado = get_name(x)
+            #print(frase, nombre, estado)
+            if estado == False:
+                return False, nombre
+            if (frase=="Okay" or frase=="okay" or frase=="oK" or frase=="OK"  or ("ok" in frase) or ("Ok" in frase)):
+                return True, nombre
+        except sr.UnknownValueError:
+            print("Error trying to understand what you say to me")
             return False, ""
-        return False, ""
-        break
+        except sr.RequestError as e:
+            print("I can't reach google, it's to sad")
+            return False, ""
+        except Exception as e:
+            print(e)
+            return False, ""
+        except UnicodeDecodeError:
+            return False, ""
+    return False, ""
 
 while True:
     try:

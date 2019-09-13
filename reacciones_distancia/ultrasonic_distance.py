@@ -112,7 +112,12 @@ if __name__ == '__main__':
                             break
                     #End Led 
                     GPIO.output(19, True)
-            time.sleep(3)
+            time.sleep(5)
+    
     # Reset by pressing CTRL + C
     except KeyboardInterrupt:
         print("Measurement stopped by User")
+    except ValueError:
+        print("Measurement stopped by Error")
+    except OSError as err:
+        print("OS error: {0}".format(err))
