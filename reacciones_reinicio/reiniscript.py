@@ -8,7 +8,7 @@ import RPi.GPIO as GPIO
 #Active GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(19, GPIO.OUT)
+GPIO.setup(4, GPIO.OUT)
 
 print( "mensaje inicial antes de la espera")
 time.sleep(20) # espera en segundos
@@ -53,9 +53,9 @@ while True:
             estado = int(row[0])
 
         if estado == 1:
-            GPIO.output(19, False)
+            GPIO.output(4, False)
             #os.system('gpio -g mode 18 out')
         elif estado == 0:
-            GPIO.output(19, True)
+            GPIO.output(4, True)
             #os.system('gpio -g mode 18 in')
         break
