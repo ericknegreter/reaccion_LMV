@@ -6,31 +6,31 @@ import os
 import subprocess, datetime
 
 #GPIO Mode (BOARD / BCM)
-#GPIO.setmode(GPIO.BCM) 
+GPIO.setmode(GPIO.BCM) 
 
 #set GPIO Pins
 GPIO_TRIGGER = 5
 GPIO_ECHO = 6
  
 #set GPIO direction (IN / OUT)
-#GPIO.setwarnings(False)
-#GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
-#GPIO.setup(GPIO_ECHO, GPIO.IN)
-#GPIO.setup(19, GPIO.OUT)
+GPIO.setwarnings(False)
+GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
+GPIO.setup(GPIO_ECHO, GPIO.IN)
+GPIO.setup(19, GPIO.OUT)
 
 #test host
 hosts = ('google.com', 'kernel.org', 'yahoo.com')
 localhost = ('10.0.5.246')
 
-def setup():
+#def setup():
     #GPIO Mode (BOARD / BCM)
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setwarnings(False)
+#    GPIO.setmode(GPIO.BCM)
+#    GPIO.setwarnings(False)
 
     #set GPIO direction (IN / OUT)
-    GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
-    GPIO.setup(GPIO_ECHO, GPIO.IN)
-    GPIO.setup(19, GPIO.OUT)
+#    GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
+#    GPIO.setup(GPIO_ECHO, GPIO.IN)
+#    GPIO.setup(19, GPIO.OUT)
 
 def ping(host):
     ret = subprocess.call(['ping', '-c', '3', '-W', '5', host],
@@ -79,16 +79,16 @@ def distance():
     distance = (TimeElapsed * 34300) / 2
  
     return distance
- 
-if __name__ == '__main__':
-    while True:
+
+while True:
+    if __name__ == '__main__':
         try:
-            setup()
+            #setup()
             estado = 0
             while True:
                 dist = distance()
                 print("Measured Distance = %.1f cm" % dist)
-                if(dist >= 35 and dist <= 38):
+                if(dist >= 34.7 and dist <= 38):
                     if(estado != 0):
                         while True:
                             if(net_is_up() == 0):
@@ -125,6 +125,7 @@ if __name__ == '__main__':
                         #End Led 
                         GPIO.output(19, True)
                 time.sleep(5)
+
         # Reset by pressing CTRL + C
         except KeyboardInterrupt:
             print("Measurement stopped by User")
@@ -134,5 +135,4 @@ if __name__ == '__main__':
             print("OS error: {0}".format(err))
         except:
             print("No controlado")
-        finally:
-            GPIO.cleanup()
+        #    GPIO.cleanup()
