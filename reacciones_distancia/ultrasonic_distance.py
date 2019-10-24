@@ -22,16 +22,6 @@ GPIO.setup(19, GPIO.OUT)
 hosts = ('google.com', 'kernel.org', 'yahoo.com')
 localhost = ('10.0.5.246')
 
-#def setup():
-    #GPIO Mode (BOARD / BCM)
-#    GPIO.setmode(GPIO.BCM)
-#    GPIO.setwarnings(False)
-
-    #set GPIO direction (IN / OUT)
-#    GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
-#    GPIO.setup(GPIO_ECHO, GPIO.IN)
-#    GPIO.setup(19, GPIO.OUT)
-
 def ping(host):
     ret = subprocess.call(['ping', '-c', '3', '-W', '5', host],
             stdout=open('/dev/null', 'w'),
@@ -88,7 +78,7 @@ while True:
             while True:
                 dist = distance()
                 print("Measured Distance = %.1f cm" % dist)
-                if(dist >= 34.7 and dist <= 38):
+                if(dist >= 34 and dist <= 38):
                     if(estado != 0):
                         while True:
                             if(net_is_up() == 0):
