@@ -117,8 +117,8 @@ while True:
                 time.sleep(5)
 
         # Reset by pressing CTRL + C
-        except KeyboardInterrupt:
-            print("Measurement stopped by User")
+        #except KeyboardInterrupt:
+        #    print("Measurement stopped by User")
         except ValueError:
             print("Measurement stopped by Error")
         except OSError as err:
