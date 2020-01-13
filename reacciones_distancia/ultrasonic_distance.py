@@ -9,14 +9,17 @@ import subprocess, datetime
 GPIO.setmode(GPIO.BCM) 
 
 #set GPIO Pins
-GPIO_TRIGGER = 5
-GPIO_ECHO = 6
+GPIO_TRIGGER = 23
+GPIO_ECHO = 24
+#GPIO_TRIGGER = 5
+#GPIO_ECHO = 6
  
 #set GPIO direction (IN / OUT)
 GPIO.setwarnings(False)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
-GPIO.setup(19, GPIO.OUT)
+#GPIO.setup(19, GPIO.OUT)
+GPIO.setup(25, GPIO.OUT)
 
 #test host
 hosts = ('google.com', 'kernel.org', 'yahoo.com')
@@ -95,7 +98,8 @@ while True:
                                 estado = 0
                                 break
                         #Start Led
-                        GPIO.output(19, False)
+                        #GPIO.output(19, False)
+                        GPIO.output(25, False)
                 else:
                     if(estado != 1):
                         while True:
@@ -113,7 +117,8 @@ while True:
                                 estado = 1
                                 break
                         #End Led 
-                        GPIO.output(19, True)
+                        #GPIO.output(19, True)
+                        GPIO.output(25, True)
                 time.sleep(5)
 
         # Reset by pressing CTRL + C

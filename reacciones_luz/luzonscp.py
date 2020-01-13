@@ -7,7 +7,8 @@ import sys
 #Active GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(4, GPIO.OUT)
+#GPIO.setup(4, GPIO.OUT)
+GPIO.setup(18, GPIO.OUT)
 
 hosts = ('google.com', 'kernel.org', 'yahoo.com')
 localhost = ('10.0.5.246')
@@ -50,7 +51,8 @@ while True:
 
         if i == '1':
             if estado == 0:
-                GPIO.output(4, False)
+                #GPIO.output(4, False)
+                GPIO.output(18, False)
                 #Update the record of the e_reaccion table of LMV databases
                 sql = "UPDATE e_reaccion SET estado = 1 WHERE dispositivo='luz'"
                 mycursor.execute(sql)
@@ -59,7 +61,8 @@ while True:
                 #END of mysql
         elif i == '0':
             if estado == 1:
-                GPIO.output(4, True)
+                #GPIO.output(4, True)
+                GPIO.output(18, True)
                 #Update the register of the e_reaccion table with ssh
                 sql = "UPDATE e_reaccion SET estado = 0 WHERE dispositivo='luz'"
                 mycursor.execute(sql)

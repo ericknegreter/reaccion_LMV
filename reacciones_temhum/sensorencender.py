@@ -14,8 +14,8 @@ GPIO.setwarnings(False)
 GPIO.setup(22, GPIO.OUT)
 
 #Set GPIO sensor is connected to
-#gpio=17
-gpio=13
+gpio=17
+#gpio=13
 con = 1
 
 #test host
