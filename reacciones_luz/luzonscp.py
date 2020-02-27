@@ -40,33 +40,36 @@ def net_is_up():
 
 while True:
     if(net_is_up() == 0):
-        mydb = mysql.connector.connect(host="10.0.5.246", user="LMV_ADMIN", passwd="LABORATORIOT4", database="LMV")
-        mycursor = mydb.cursor()
-        sql = "SELECT estado FROM e_reaccion WHERE dispositivo = 'luz'"
-        mycursor.execute(sql)
-        records = mycursor.fetchall()
-        print(mycursor.rowcount, "record selected")
-        for row in records:
-            estado = int(row[0])
+        try:
+            mydb = mysql.connector.connect(host="10.0.5.246", user="LMV_ADMIN", passwd="MINIMOT4", database="LMV")
+            mycursor = mydb.cursor()
+            sql = "SELECT estado FROM e_reaccion WHERE dispositivo = 'luz'"
+            mycursor.execute(sql)
+            records = mycursor.fetchall()
+            print(mycursor.rowcount, "record selected")
+            for row in records:
+                estado = int(row[0])
 
-        if i == '1':
-            if estado == 0:
-                #GPIO.output(4, False)
-                GPIO.output(18, False)
-                #Update the record of the e_reaccion table of LMV databases
-                sql = "UPDATE e_reaccion SET estado = 1 WHERE dispositivo='luz'"
-                mycursor.execute(sql)
-                mydb.commit()
-                print(mycursor.rowcount, "record affected.")
-                #END of mysql
-        elif i == '0':
-            if estado == 1:
-                #GPIO.output(4, True)
-                GPIO.output(18, True)
-                #Update the register of the e_reaccion table with ssh
-                sql = "UPDATE e_reaccion SET estado = 0 WHERE dispositivo='luz'"
-                mycursor.execute(sql)
-                mydb.commit()
-                print(mycursor.rowcount, "record affected.")
-                #END of mysql
-        break
+            if i == '1':
+                if estado == 0:
+                    #GPIO.output(4, False)
+                    GPIO.output(18, False)
+                    #Update the record of the e_reaccion table of LMV databases
+                    sql = "UPDATE e_reaccion SET estado = 1 WHERE dispositivo='luz'"
+                    mycursor.execute(sql)
+                    mydb.commit()
+                    print(mycursor.rowcount, "record affected.")
+                    #END of mysql
+            elif i == '0':
+                if estado == 1:
+                    #GPIO.output(4, True)
+                    GPIO.output(18, True)
+                    #Update the register of the e_reaccion table with ssh
+                    sql = "UPDATE e_reaccion SET estado = 0 WHERE dispositivo='luz'"
+                    mycursor.execute(sql)
+                    mydb.commit()
+                    print(mycursor.rowcount, "record affected.")
+                    #END of mysql
+            break
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
