@@ -1,4 +1,5 @@
 import mysql.connector
+from mysql.connector import Error
 import time
 import subprocess, datetime
 import RPi.GPIO as GPIO
@@ -7,7 +8,6 @@ import sys
 #Active GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-#GPIO.setup(4, GPIO.OUT)
 GPIO.setup(18, GPIO.OUT)
 
 hosts = ('google.com', 'kernel.org', 'yahoo.com')
@@ -26,12 +26,12 @@ def ping(host):
 def net_is_up():
     print ("[%s] Checking if local network is up..." % str(datetime.datetime.now()))
     
-    xstatus = 1
+    xstatus = 0
     if ping(localhost):
         print ("[%s] Local network is up!" % str(datetime.datetime.now()))
-        xstatus = 0
+        xstatus = 1
         
-    if xstatus:
+    if not xstatus:
         time.sleep(10)
         print ("[%s] Local network is down :(" % str(datetime.datetime.now()))
         time.sleep(25)
@@ -39,7 +39,7 @@ def net_is_up():
     return xstatus
 
 while True:
-    if(net_is_up() == 0):
+    if(net_is_up()):
         try:
             mydb = mysql.connector.connect(host="10.0.5.246", user="LMV_ADMIN", passwd="MINIMOT4", database="LMV")
             mycursor = mydb.cursor()
@@ -49,10 +49,8 @@ while True:
             print(mycursor.rowcount, "record selected")
             for row in records:
                 estado = int(row[0])
-
             if i == '1':
                 if estado == 0:
-                    #GPIO.output(4, False)
                     GPIO.output(18, False)
                     #Update the record of the e_reaccion table of LMV databases
                     sql = "UPDATE e_reaccion SET estado = 1 WHERE dispositivo='luz'"
@@ -62,7 +60,6 @@ while True:
                     #END of mysql
             elif i == '0':
                 if estado == 1:
-                    #GPIO.output(4, True)
                     GPIO.output(18, True)
                     #Update the register of the e_reaccion table with ssh
                     sql = "UPDATE e_reaccion SET estado = 0 WHERE dispositivo='luz'"
@@ -70,6 +67,7 @@ while True:
                     mydb.commit()
                     print(mycursor.rowcount, "record affected.")
                     #END of mysql
+            mydb.close()
             break
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
