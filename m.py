@@ -4,7 +4,7 @@ import sys
 import mysql.connector
 from datetime import date, datetime
 peticion=sys.argv[1]
-cnx = mysql.connector.connect(user="LMV_ADMIN", password="LABORATORIOT4", host="10.0.5.246", database="LMV")
+cnx = mysql.connector.connect(user="LMV_ADMIN", password="MINIMOT4", host="10.0.5.246", database="LMV")
 cursor = cnx.cursor(buffered=True)
 today = datetime.now()
 print(today)

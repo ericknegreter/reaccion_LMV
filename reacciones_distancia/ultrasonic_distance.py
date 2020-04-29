@@ -71,16 +71,17 @@ def distance():
  
     return distance
 
-if __name__ == '__main__':
-    try:
-        estado = 0
-        while True:
-            dist = distance()
-            print("Measured Distance = %.1f cm" % dist)
-            mydb = mysql.connector.connect(host="10.0.5.246", user="LMV_ADMIN", passwd="MINIMOT4", database="LMV")
-            mycursor = mydb.cursor()
-            if(dist >= 34 and dist <= 38):
-                if(estado != 0):
+while True:
+    if __name__ == '__main__':
+        try:
+            GPIO.output(25, False)
+            estado = 0
+            while True:
+                dist = distance()
+                print("Measured Distance = %.1f cm" % dist)
+                mydb = mysql.connector.connect(host="10.0.5.246", user="LMV_ADMIN", passwd="MINIMOT4", database="LMV")
+                mycursor = mydb.cursor()
+                if((dist >= 34 and dist <= 38) and (estado == 0 or estado == 1)):
                     while True:
                         if(net_is_up()):
                             try:
@@ -92,14 +93,13 @@ if __name__ == '__main__':
                                 print(mycursor.rowcount, "record affected.")
                                 time.sleep(1)
                                 #END of mysql
-                                estado = 0
+                                estado = 2
                                 break
                             except mysql.connector.Error as err:
-                                    print("Something went wrong: {}".format(err))
+                                print("Something went wrong: {}".format(err))
                     #Start Led
                     GPIO.output(25, False)
-            else:
-                if(estado != 1):
+                elif((dist > 38 or dist < 34) and (estado == 0 or estado == 2)):
                     while True:
                         if(net_is_up()):
                             try:
@@ -117,13 +117,13 @@ if __name__ == '__main__':
                                 print("Something went wrong: {}".format(err))
                     #End Led 
                     GPIO.output(25, True)
-            mydb.close()
-            time.sleep(5)
+                mydb.close()
+                time.sleep(5)
         # Reset by pressing CTRL + C
         #except KeyboardInterrupt:
         #    print("Measurement stopped by User")
-    except ValueError:
-        print("Measurement stopped by Error")
-    except OSError as err:
-        print("OS error: {0}".format(err))
+        except ValueError:
+            print("Measurement stopped by Error")
+        except OSError as err:
+            print("OS error: {0}".format(err))
         #    print("No controlado")
