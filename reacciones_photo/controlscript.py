@@ -75,7 +75,7 @@ def get_name(Name):
 
 def store(path, name, person, photoname):
     while True:
-        if(net_is_up() == 0):
+        if(net_is_up()):
             try:
                 #Connection and insert with mysql complete
                 mydb = mysql.connector.connect(host="10.0.5.246", user="LMV_ADMIN", passwd="MINIMOT4", database="LMV")
